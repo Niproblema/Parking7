@@ -2,8 +2,11 @@
     <string name="app_name">Park7</string>
     <string name="splash_screen_text">Park7</string>
 
-    <string name="login_button_login">Login</string>
-    <string name="login_register_button">Register</string>
-    <string name="login_button_newUser">New user</string>
-    <string name="login_button_existingUser">Existing user</string>
+    <string name="login_button_login">Vstop</string>
+    <string name="login_register_button">Registracija</string>
+    <string name="login_button_newUser">Nov uporabnik</string>
+    <string name="login_edittext_existingUser">Obstoječi uporabnik</string>
+    <string name="login_edittext_loginEmail">Uporabnik</string>
+    <string name="login_button_loginPassword">Geslo</string>
+
 </resources>
