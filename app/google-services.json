@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "302409921006",
+    "firebase_url": "https://parkings7.firebaseio.com",
+    "project_id": "parkings7",
+    "storage_bucket": "parkings7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:302409921006:android:95b3b2be0bc1fc7eb5deff",
+        "android_client_info": {
+          "package_name": "com.niproblema.parking7"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "302409921006-cununb43ogtv14aeh2p2p2utnjjjfhqo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.niproblema.parking7",
+            "certificate_hash": "a48356c75645caa40c9e4be53d167b1d7ea0c99b"
+          }
+        },
+        {
+          "client_id": "302409921006-jehqpk6noqmm16h7c1t44madjpu8afvv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbbUeXThvsuR0zf4o1akotHChbOUqpHaI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "302409921006-jehqpk6noqmm16h7c1t44madjpu8afvv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

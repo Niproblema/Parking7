@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Park7</string>
+    <string name="splash_screen_text">Park7</string>
+
+    <string name="login_button_login">Login</string>
+    <string name="login_register_button">Register</string>
+    <string name="login_button_newUser">New user</string>
+    <string name="login_button_existingUser">Existing user</string>
+</resources>
