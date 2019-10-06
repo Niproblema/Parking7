@@ -9,4 +9,7 @@
     <string name="login_edittext_loginEmail">Uporabnik</string>
     <string name="login_button_loginPassword">Geslo</string>
 
+    <string name="tabs_name_maps">Zemljevid</string>
+    <string name="tabs_name_settings">Nastavitve</string>
+
 </resources>

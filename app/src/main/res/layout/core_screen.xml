@@ -1,11 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:id="@+id/llRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
+
+    <LinearLayout
+        android:id="@+id/llTopBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="CORE" />
+        android:layout_height="50dp"
+        android:background="#5C5C5C"
+        android:orientation="horizontal"
+        android:weightSum="1.0">
+
+        <TextView
+            android:id="@+id/tvUsername"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="start|center_vertical"
+            android:paddingStart="15dp"
+            android:text="Username"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvBalance"
+            android:layout_width="0dip"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5
+"
+            android:gravity="center_vertical|end"
+            android:paddingEnd="15dp"
+            android:text="0€"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/fragment"
+        android:name="com.niproblema.parking7.MapViewFragment"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent" />
+
 </LinearLayout>
