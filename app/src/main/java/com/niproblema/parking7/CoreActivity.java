@@ -15,10 +15,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import android.os.Bundle;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.text.DecimalFormat;
+import java.util.Random;
 
 public class CoreActivity extends AppCompatActivity {
     public static final long BACK_DOUBLEPRESS_INTERVAL = 500;
@@ -26,12 +30,18 @@ public class CoreActivity extends AppCompatActivity {
     private MapView mMap;
     private GoogleMap gMap;
     private FirebaseAuth mAuth;
+    private TextView mUsername, mBalance;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.core_screen);
         mAuth = FirebaseAuth.getInstance();
+        mUsername = findViewById(R.id.tvUsername);
+        mBalance = findViewById(R.id.tvBalance);
+        mUsername.setText(mAuth.getCurrentUser().getEmail());
+        mBalance.setText(new DecimalFormat("#.##").format(new Random().nextDouble() * 50D)+"€");
     }
 
     @Override

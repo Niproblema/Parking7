@@ -21,22 +21,24 @@
             android:contentDescription="Image"
             android:src="@drawable/parking" />
 
-        <EditText
+        <TextView
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:editable="false"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="Name" />
+            android:padding="10dp"
+            android:text="Name"
+            android:textSize="18sp" />
 
         <EditText
             android:id="@+id/etPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Cena"
             android:inputType="textPersonName"
-            android:text="Price" />
+            android:padding="10dp" />
 
         <EditText
             android:id="@+id/etDescription"
@@ -45,9 +47,10 @@
             android:editable="false"
             android:ems="10"
             android:gravity="start|top"
+            android:hint="Opis"
             android:inputType="textMultiLine"
-            android:singleLine="false"
-            android:text="Description" />
+            android:padding="10dp"
+            android:singleLine="false" />
     </LinearLayout>
 
     <LinearLayout
@@ -62,6 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:padding="10dp"
             android:text="Button" />
 
         <Button

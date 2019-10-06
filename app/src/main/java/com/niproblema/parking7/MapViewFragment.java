@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -68,6 +69,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
                     public void onMapLongClick(LatLng latLng) {
                         Intent lauchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
                         lauchIntent.putExtra("new", true);
+                        lauchIntent.putExtra("pos", latLng);
                         startActivity(lauchIntent);
                     }
                 });
@@ -75,7 +77,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
                     @Override
                     public void onInfoWindowClick(Marker marker) {
                         Intent lauchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
-                        lauchIntent.putExtra("parkingPlace", locationsMap.get((String)marker.getTag()));
+                        lauchIntent.putExtra("parkingPlace", locationsMap.get((String) marker.getTag()));
                         startActivity(lauchIntent);
                     }
                 });
@@ -101,12 +103,12 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
                 while (locations.hasNext()) {
                     DataSnapshot location = locations.next();
                     String id = (String) location.getKey();
-                    if(location.getValue() == null){
+                    if (location.getValue() == null) {
                         locationsMap.remove(id);
-                    }else {
-                        double lat = (double) location.child("lat").getValue();
-                        double lon = (double) location.child("lon").getValue();
+                    } else {
                         String owner = (String) location.child("owner").getValue();
+                        double lat = Double.parseDouble((String) location.child("lat").getValue());
+                        double lon = Double.parseDouble((String) location.child("lon").getValue());
                         boolean availability = (boolean) location.child("available").getValue();
                         double price = (double) location.child("price").getValue();
                         String description = (String) location.child("description").getValue();
@@ -163,7 +165,8 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
             Iterator nLocations = locationsMap.entrySet().iterator();
             while (nLocations.hasNext()) {
                 Map.Entry<String, ParkingPlace> entrySet = (Map.Entry<String, ParkingPlace>) nLocations.next();
-                Marker m = googleMap.addMarker(new MarkerOptions().position(entrySet.getValue().GetLocation()).title(entrySet.getValue().lat + " " + entrySet.getValue().lon));
+                Marker m = googleMap.addMarker(new MarkerOptions().position(entrySet.getValue().GetLocation()).title(entrySet.getValue().lat + " " + entrySet.getValue().lon)
+                        .icon(BitmapDescriptorFactory.defaultMarker(entrySet.getValue().available ? BitmapDescriptorFactory.HUE_BLUE : BitmapDescriptorFactory.HUE_RED)));
                 m.setTag(entrySet.getKey());
                 currentMarkers.push(m);
             }

@@ -12,4 +12,12 @@
     <string name="tabs_name_maps">Zemljevid</string>
     <string name="tabs_name_settings">Nastavitve</string>
 
+    <string name="location_rent_start">Zasedi</string>
+    <string name="location_rent_end">Zapusti</string>
+    <string name="location_add">Dodaj</string>
+    <string name="location_remove">Odstrani</string>
+
+
+
+
 </resources>
