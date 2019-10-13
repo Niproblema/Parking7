@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.niproblema.parking7.MapViewFragment;
+import com.niproblema.parking7.Activities.MapViewFragment;
 import com.niproblema.parking7.R;
 
 public class FixedTabsPagerAdapter extends FragmentPagerAdapter {

@@ -1,4 +1,4 @@
-package com.niproblema.parking7;
+package com.niproblema.parking7.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -27,11 +27,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.niproblema.parking7.Activities.LocationPreviewActivity;
+import com.niproblema.parking7.ParkingPlace;
+import com.niproblema.parking7.R;
 
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 import java.util.Stack;
 
 public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClickListener {

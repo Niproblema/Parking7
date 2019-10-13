@@ -1,4 +1,4 @@
-package com.niproblema.parking7;
+package com.niproblema.parking7.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.firebase.auth.FirebaseAuth;
+import com.niproblema.parking7.R;
 
 import java.text.DecimalFormat;
 import java.util.Random;

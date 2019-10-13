@@ -40,7 +40,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.niproblema.parking7.MapViewFragment"
+        android:name="com.niproblema.parking7.Activities.MapViewFragment"
         android:layout_width="match_parent"
         android:layout_height="fill_parent" />
 

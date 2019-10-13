@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorAccent"
-    tools:context=".SplashScreen">
+    tools:context=".Activities.PreLogin.SplashScreen">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,
@@ -13,13 +13,27 @@
         android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="425dp"
-        android:fontFamily="monospace"
+        android:fontFamily="sans-serif-condensed-light"
         android:gravity="center"
         android:keepScreenOn="true"
         android:text="@string/splash_screen_text"
         android:textColor="#FFF"
-        android:textSize="50sp"
+        android:textSize="70sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvPermissionsInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:layout_marginTop="200dp"
+        android:fontFamily="sans-serif-condensed-light"
+        android:gravity="center"
+        android:text="@string/splash_screen_permissions_text"
+        android:textColor="#FCFCFC"
+        android:textColorLink="#00FFFFFF"
+        android:textSize="25sp"
+        android:visibility="invisible" />
 
     <!-- This FrameLayout insets its children based on system windows using
          android:fitsSystemWindows. -->

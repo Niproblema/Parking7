@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Park7</string>
     <string name="splash_screen_text">Park7</string>
+    <string name="splash_screen_permissions_text">Omogoči zahtevana dovoljenja,\n ki so ključna za delovanje aplikacije!</string>
 
     <string name="login_button_login">Vstop</string>
     <string name="login_register_button">Registracija</string>
@@ -8,6 +9,14 @@
     <string name="login_edittext_existingUser">Obstoječi uporabnik</string>
     <string name="login_edittext_loginEmail">Uporabnik</string>
     <string name="login_button_loginPassword">Geslo</string>
+    <string name="login_exception_wrong_password">Napačno geslo!</string>
+    <string name="login_exception_wrong_username">Uporabnik ne obstaja!</string>
+    <string name="login_exception_existing_username">Ta uporabnik že obstaja!</string>
+    <string name="login_exception_weak_password">Preveč šibko geslo!</string>
+    <string name="login_exception_try_later">Poskusi kasneje.</string>
+    <string name="login_exception_default">Uporabniško ime(email) ali geslo je neustrezeno</string>
+    <string name="login_exception_invalid">Preveri vnešene podatke!</string>
+
 
     <string name="tabs_name_maps">Zemljevid</string>
     <string name="tabs_name_settings">Nastavitve</string>
