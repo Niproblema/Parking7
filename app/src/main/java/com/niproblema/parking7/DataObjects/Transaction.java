@@ -2,6 +2,8 @@ package com.niproblema.parking7.DataObjects;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.Serializable;
@@ -24,15 +26,16 @@ public class Transaction implements Serializable, DataObject {
 		mRenterUID = renterUID;
 	}
 
+	@Nullable
 	public static Transaction parse(DataSnapshot data) {
 		try {
 			// Parse
-			double cost = (double) data.child("cost").getValue();                    	// TODO ? not set yewt?
-			long stopTimeStamp = (long) data.child("stopTimestamp").getValue();    		// TODO ? not set yet?
-			long startTimeStamp = (long) data.child("startTimestamp").getValue();
-			String providerUID = (String) data.child("providerUID").getValue();
-			String renterUID = (String) data.child("renterUID").getValue();
-			String parkingSnapshotUID = (String) data.child("parkingSnapshotUID").getValue();
+			double cost = data.child("cost").getValue(Double.class);
+			long stopTimeStamp = data.child("stopTimestamp").getValue(Long.class);
+			long startTimeStamp = data.child("startTimestamp").getValue(Long.class);
+			String providerUID = data.child("providerUID").getValue(String.class);
+			String renterUID = data.child("renterUID").getValue(String.class);
+			String parkingSnapshotUID = data.child("parkingSnapshotUID").getValue(String.class);
 
 			// Init
 			Transaction t = new Transaction(parkingSnapshotUID, providerUID, renterUID);

@@ -1,8 +1,6 @@
 package com.niproblema.parking7.Activities;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.icu.text.Transliterator;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -31,12 +29,10 @@ import com.niproblema.parking7.DataObjects.Location;
 import com.niproblema.parking7.DataObjects.Parking;
 import com.niproblema.parking7.DataObjects.Recurrence;
 import com.niproblema.parking7.DataObjects.TimeSlot;
-import com.niproblema.parking7.DataObjects.Transaction;
 import com.niproblema.parking7.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -47,6 +43,14 @@ public class LocationPreviewActivity extends AppCompatActivity {
 	Button mButton1, mButton2;
 	FirebaseFunctions mFunctions;
 
+	// Modes
+	private boolean mIsAddingLocation = false;
+
+	// New location
+	private LatLng mLatLngLoc;
+
+	// Existing location
+	private Parking mParking;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,55 +69,76 @@ public class LocationPreviewActivity extends AppCompatActivity {
 	protected void onStart() {
 		super.onStart();
 		Intent i = getIntent();
-		if (i.hasExtra("new")) {
-			final LatLng position = i.getParcelableExtra("pos");
-			mTitle.setText(position.latitude + " " + position.longitude);
-			mButton1.setText(R.string.location_add);
-			mButton1.setBackgroundColor(getColor(R.color.loc_green));
-			mButton1.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					final String id = UUID.randomUUID().toString();
+		if (i.hasExtra("location")) {                // Adding a new place!
+			mLatLngLoc = i.getParcelableExtra("location");
+			setupUI(true);
 
-					FirebaseDatabase.getInstance().getReference("parkings/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
-						@Override
-						public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+		} else if (i.hasExtra("parkingPlace")) {    // Viewing existing place
+			mParking = (Parking) i.getSerializableExtra("parkingPlace");
+			setupUI(false);
 
-							final String usermail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-							double costd = 0.1;
-							try {
-								costd = Double.parseDouble(mPrice.getText().toString());
-							} catch (Exception e) {
-							}
-							final double cost = costd;
-							final String description = mDescription.getText().toString();
-							final String lat = String.valueOf(position.latitude);
-							final String lon = String.valueOf(position.longitude);
-
-							dataSnapshot.getRef().setValue(new HashMap<String, Object>() {
-								{
-									put("available", true);
-									put("description", description);
-									put("lat", lat);
-									put("lon", lon);
-									put("owner", usermail);
-									put("price", cost);
-								}
-							});
-							finish();
-						}
-
-						@Override
-						public void onCancelled(@NonNull DatabaseError databaseError) {
-							Log.e("DB", "onCancelled", databaseError.toException());
-						}
-					});
-				}
-			});
 		} else {
-			mTitle.setFocusable(false);
-			mDescription.setFocusable(false);
-			mPrice.setFocusable(false);
+			Log.e("PREVIEW", "Error launching activity, no intent set");
+			finish();
+		}
+
+//		mButton2.setOnClickListener(new View.OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				addParking();
+//			}
+//		});
+
+
+//		if (i.hasExtra("new")) {
+//			final LatLng position = i.getParcelableExtra("pos");
+//			mTitle.setText(position.latitude + " " + position.longitude);
+//			mButton1.setText(R.string.location_add);
+//			mButton1.setBackgroundColor(getColor(R.color.loc_green));
+//			mButton1.setOnClickListener(new View.OnClickListener() {
+//				@Override
+//				public void onClick(View v) {
+//					final String id = UUID.randomUUID().toString();
+//
+//					FirebaseDatabase.getInstance().getReference("parkings/" + id).addListenerForSingleValueEvent(new ValueEventListener() {
+//						@Override
+//						public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//
+//							final String usermail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
+//							double costd = 0.1;
+//							try {
+//								costd = Double.parseDouble(mPrice.getText().toString());
+//							} catch (Exception e) {
+//							}
+//							final double cost = costd;
+//							final String description = mDescription.getText().toString();
+//							final String lat = String.valueOf(position.latitude);
+//							final String lon = String.valueOf(position.longitude);
+//
+//							dataSnapshot.getRef().setValue(new HashMap<String, Object>() {
+//								{
+//									put("available", true);
+//									put("description", description);
+//									put("lat", lat);
+//									put("lon", lon);
+//									put("owner", usermail);
+//									put("price", cost);
+//								}
+//							});
+//							finish();
+//						}
+//
+//						@Override
+//						public void onCancelled(@NonNull DatabaseError databaseError) {
+//							Log.e("DB", "onCancelled", databaseError.toException());
+//						}
+//					});
+//				}
+//			});
+//		} else {
+//			mTitle.setFocusable(false);
+//			mDescription.setFocusable(false);
+//			mPrice.setFocusable(false);
 
 //            String email = FirebaseAuth.getInstance().getCurrentUser().getEmail();
 //            final ParkingPlace parkingPlace = (ParkingPlace) i.getSerializableExtra("parkingPlace");
@@ -145,13 +170,18 @@ public class LocationPreviewActivity extends AppCompatActivity {
 //                    });
 //                }
 //            });
+	}
+
+
+	private void setupUI(boolean isAddingLocation) {
+		mIsAddingLocation = isAddingLocation;
+
+		if(isAddingLocation){
+
+		}else{
+
 		}
-		mButton2.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				addParking();
-			}
-		});
+
 	}
 
 

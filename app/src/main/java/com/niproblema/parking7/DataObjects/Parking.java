@@ -2,13 +2,14 @@ package com.niproblema.parking7.DataObjects;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class Parking implements Serializable, DataObject {
@@ -27,9 +28,9 @@ public class Parking implements Serializable, DataObject {
 	public double mScore;
 	/// Availability
 	public boolean mAvailable;
-	public String mTransactionUID;
+	public String mTransactionUID;            // Current transaction active on parking.
 	/// Transactions
-	public List<Transaction> mTransactions;
+	public List<String> mTransactionUIDs;    // List of all previous transactions. Added by server when transaction ends.
 
 	public Parking(List<TimeSlot> timeSlots, Location location, String description, String access) {
 		this.mTimeSlots = timeSlots;
@@ -38,30 +39,30 @@ public class Parking implements Serializable, DataObject {
 		this.mAccessInstructions = access;
 	}
 
+	@Nullable
 	public static Parking parse(DataSnapshot data) {
 		try {
 			// Parse
-			String accessInstruction = (String) data.child("accessInstructions").getValue();
-			boolean available = (boolean) data.child("availability").child("available").getValue();
-			String transactionUID = (String) data.child("availability").child("transactionUID").getValue();
-			String description = (String) data.child("description").getValue();
+			String accessInstruction = data.child("accessInstructions").getValue(String.class);
+			boolean available = data.child("availability").child("available").getValue(Boolean.class);
+			String transactionUID = data.child("availability").child("transactionUID").getValue(String.class);
+			String description = data.child("description").getValue(String.class);
 			Location location = Location.parse(data.child("location"));
 			if (location == null) return null;
-			String ownerUID = (String) data.child("ownerUID").getValue();
-			long scoreSum = (long) data.child("publicScore").child("sum").getValue();
-			long votes = (long) data.child("publicScore").child("votes").getValue();
-			double score = ((double) scoreSum) / ((double) votes);
+			String ownerUID = data.child("ownerUID").getValue(String.class);
+			long scoreSum = data.child("publicScore").child("sum").getValue(Long.class);
+			long votes = data.child("publicScore").child("votes").getValue(Long.class);
+			double score = votes == 0 ? 0D : ((double) scoreSum) / ((double) votes);
 			List<TimeSlot> slots = new ArrayList<TimeSlot>();
 			for (DataSnapshot slotData : data.child("timeSlots").getChildren()) {
 				TimeSlot parsedSlot = TimeSlot.parse(slotData);
 				if (parsedSlot == null) return null;
 				slots.add(parsedSlot);
 			}
-			List<Transaction> transactions = new ArrayList<Transaction>(); // TODO: chnage to UIDS, not objects!
+			List<String> transactions = new ArrayList<String>();
 			for (DataSnapshot transactionData : data.child("transactions").getChildren()) {
-				Transaction parsedTransaction = Transaction.parse(transactionData);
-				if (parsedTransaction == null) return null;
-				transactions.add(parsedTransaction);
+				String parsedTransactionUID = transactionData.getValue(String.class);
+				transactions.add(parsedTransactionUID);
 			}
 
 			// Init
@@ -70,7 +71,7 @@ public class Parking implements Serializable, DataObject {
 			parsedPark.mTransactionUID = transactionUID;
 			parsedPark.mOwnerUID = ownerUID;
 			parsedPark.mScore = score;
-			parsedPark.mTransactions = transactions;
+			parsedPark.mTransactionUIDs = transactions;
 			return parsedPark;
 		} catch (Exception e) {
 			Log.e("PARKING", "Error parsing parking data: " + e.toString());

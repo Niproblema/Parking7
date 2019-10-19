@@ -70,18 +70,16 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 					@Override
 					public void onMapLongClick(LatLng latLng) {
 						Intent lauchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
-						lauchIntent.putExtra("new", true);
-						lauchIntent.putExtra("pos", latLng);
-
+						lauchIntent.putExtra("location", latLng);
 						startActivity(lauchIntent);
 					}
 				});
 				googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 					@Override
 					public void onInfoWindowClick(Marker marker) {
-						//Intent lauchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
-						//lauchIntent.putExtra("parkingPlace", mLocationsMap.get((String) marker.getTag()));
-						//startActivity(lauchIntent);
+						Intent lauchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
+						lauchIntent.putExtra("parkingPlace", mLocationsMap.get((String) marker.getTag()).first);
+						startActivity(lauchIntent);
 					}
 				});
 				// For showing a move to my GetLocation button
@@ -153,6 +151,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 							Marker m = googleMap.addMarker(new MarkerOptions().position(new LatLng(parking.mLocation.mLat, parking.mLocation.mLon))
 									.title("TODO")    //TODO
 									.icon(BitmapDescriptorFactory.defaultMarker(parking.mAvailable ? BitmapDescriptorFactory.HUE_GREEN : BitmapDescriptorFactory.HUE_RED)));
+							m.setTag(id);
 							mLocationsMap.put(id, new Pair<Parking, Marker>(parking, m));
 						}
 					}

@@ -2,6 +2,8 @@ package com.niproblema.parking7.DataObjects;
 
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.google.firebase.database.DataSnapshot;
 
 import java.io.Serializable;
@@ -27,15 +29,16 @@ public class TimeSlot implements Serializable, DataObject {
 		this.mTimeEnd = timeEnd;
 	}
 
+	@Nullable
 	public static TimeSlot parse(DataSnapshot data) {
 		try {
 			// Parse
-			double insuranceBail = (double) data.child("insuranceBail").getValue();
-			double price = (double) data.child("price").getValue();
-			Recurrence recurrence = Recurrence.valueOf(((String) data.child("recurrence").getValue()).toUpperCase());
-			long startDate = (long) data.child("startDate").getValue();
-			double timeStart = (double) data.child("timeStart").getValue();
-			double timeEnd = (double) data.child("timeEnd").getValue();
+			double insuranceBail = data.child("insuranceBail").getValue(Double.class);
+			double price = data.child("price").getValue(Double.class);
+			Recurrence recurrence = Recurrence.valueOf(data.child("recurrence").getValue(String.class).toUpperCase());
+			long startDate = data.child("startDate").getValue(Long.class);
+			double timeStart = data.child("timeStart").getValue(Double.class);
+			double timeEnd = data.child("timeEnd").getValue(Double.class);
 
 			// Init
 			return new TimeSlot(insuranceBail, price, recurrence, startDate, timeStart, timeEnd);
