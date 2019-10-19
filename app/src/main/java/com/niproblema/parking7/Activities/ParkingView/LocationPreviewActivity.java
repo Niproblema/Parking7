@@ -55,14 +55,14 @@ public class LocationPreviewActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.location_preview_screen);
-		mImageView = findViewById(R.id.ivParkPlacPreview);
-		mTitle = findViewById(R.id.etTitle);
-		mDescription = findViewById(R.id.etDescription);
-		mPrice = findViewById(R.id.etPrice);
-		mButton1 = findViewById(R.id.bP1);
-		mButton2 = findViewById(R.id.bP2);
-		mFunctions = FirebaseFunctions.getInstance();
+		setContentView(R.layout.park_preview_screen);
+//		mImageView = findViewById(R.id.ivParkPlacPreview);
+//		mTitle = findViewById(R.id.etTitle);
+//		mDescription = findViewById(R.id.etDescription);
+//		mPrice = findViewById(R.id.etPrice);
+//		mButton1 = findViewById(R.id.bP1);
+//		mButton2 = findViewById(R.id.bP2);
+//		mFunctions = FirebaseFunctions.getInstance();
 	}
 
 	@Override
