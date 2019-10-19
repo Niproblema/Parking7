@@ -10,7 +10,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
-import com.niproblema.parking7.Permissions.Permissions;
+import com.niproblema.parking7.Utils.Permissions.Permissions;
 import com.niproblema.parking7.R;
 
 public class SplashScreen extends AppCompatActivity {

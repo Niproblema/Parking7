@@ -8,7 +8,13 @@
     <string name="login_button_newUser">Nov uporabnik</string>
     <string name="login_edittext_existingUser">Obstoječi uporabnik</string>
     <string name="login_edittext_loginEmail">Uporabnik</string>
-    <string name="login_button_loginPassword">Geslo</string>
+    <string name="login_loginPassword">Geslo</string>
+    <string name="login_registerPassword_repeat">Ponovi geslo</string>
+    <string name="login_registerFirstName">Ime</string>
+    <string name="login_registerLastName">Priimek</string>
+    <string name="login_registerTaxNumber">Davčna številka</string>
+
+
     <string name="login_exception_wrong_password">Napačno geslo!</string>
     <string name="login_exception_wrong_username">Uporabnik ne obstaja!</string>
     <string name="login_exception_existing_username">Ta uporabnik že obstaja!</string>
@@ -16,7 +22,8 @@
     <string name="login_exception_try_later">Poskusi kasneje.</string>
     <string name="login_exception_default">Uporabniško ime(email) ali geslo je neustrezeno</string>
     <string name="login_exception_invalid">Preveri vnešene podatke!</string>
-
+    <string name="login_register_password_missmatch">Gesla se ne ujemata!</string>
+    <string name="login_register_invalid_taxNumber">Napačna davčna številka!</string>
 
     <string name="tabs_name_maps">Zemljevid</string>
     <string name="tabs_name_settings">Nastavitve</string>
@@ -25,8 +32,23 @@
     <string name="location_rent_end">Zapusti</string>
     <string name="location_add">Dodaj</string>
     <string name="location_remove">Odstrani</string>
+    <string name="location_image_description">Predogled parkirnega prostora</string>
+    <string name="location_time_dedline_description">Parkiranje najkasneje do</string>
+    <string name="location_time_deadline">Najkasneje do:</string>
+    <string name="location_location_description">Lokacija parkirišča</string>
+    <string name="location_cost">Cena parkiranja na uro</string>
+    <string name="location_cost_risk">Kavcija</string>
+    <string name="location_owner">Lastnik parkirišča</string>
+    <string name="location_description">Opis parkirišča</string>
 
-
-
-
+    <string name="location_street">Ulični naslov</string>
+    <string name="location_city">Mesto</string>
+    <string name="location_country">Država</string>
+    <string name="location_justCost">Cena</string>
+    <string name="location_justCost_perHour">€/uro</string>
+    <string name="location_justInusrance_cost">€</string>
+    <string name="location_image_contentDescription">Klikni za izbiro slike</string>
+    <string name="location_timeStart_default">00:00</string>
+    <string name="location_timeEnd_default">24:00</string>
+    <string name="general_hour">ura</string>
 </resources>

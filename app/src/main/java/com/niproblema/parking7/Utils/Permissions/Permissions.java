@@ -1,4 +1,4 @@
-package com.niproblema.parking7.Permissions;
+package com.niproblema.parking7.Utils.Permissions;
 
 import android.content.Context;
 import android.content.pm.PackageManager;

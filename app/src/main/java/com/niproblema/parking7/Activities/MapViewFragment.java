@@ -23,11 +23,14 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.niproblema.parking7.Activities.ParkingView.LocationAddModifyActivity;
+import com.niproblema.parking7.Activities.ParkingView.LocationPreviewActivity;
 import com.niproblema.parking7.DataObjects.Parking;
 import com.niproblema.parking7.R;
 
@@ -39,6 +42,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 	private GoogleMap googleMap;
 	private LocationManager locationManager;
 	private FirebaseDatabase mDatabase;
+	private FirebaseAuth mAuth;
 	private DatabaseReference mParkingsRef;
 
 	private HashMap<String, Pair<Parking, Marker>> mLocationsMap = new HashMap<String, Pair<Parking, Marker>>();
@@ -49,6 +53,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 
 		mDatabase = FirebaseDatabase.getInstance();
 		mParkingsRef = mDatabase.getReference("parkings");
+		mAuth = FirebaseAuth.getInstance();
 
 		locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
 		mMapView = (MapView) rootView.findViewById(R.id.mapView);
@@ -69,17 +74,25 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 				googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
 					@Override
 					public void onMapLongClick(LatLng latLng) {
-						Intent lauchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
-						lauchIntent.putExtra("location", latLng);
+						Intent lauchIntent = new Intent(getActivity(), LocationAddModifyActivity.class);
+						lauchIntent.putExtra("newLocation", latLng);
 						startActivity(lauchIntent);
 					}
 				});
 				googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 					@Override
 					public void onInfoWindowClick(Marker marker) {
-						Intent lauchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
-						lauchIntent.putExtra("parkingPlace", mLocationsMap.get((String) marker.getTag()).first);
-						startActivity(lauchIntent);
+						Parking parking = mLocationsMap.get((String) marker.getTag()).first;
+						Intent launchIntent = null;
+						if (parking.mOwnerUID.equals(mAuth.getCurrentUser().getEmail())) {    // Editing own parking
+							launchIntent = new Intent(getActivity(), LocationAddModifyActivity.class);
+							launchIntent.putExtra("parkingPlace", parking);
+						} else {                                                                // Viewing someone else's parking
+							launchIntent = new Intent(getActivity(), LocationPreviewActivity.class);
+							launchIntent.putExtra("parkingPlace", parking);
+						}
+
+						startActivity(launchIntent);
 					}
 				});
 				// For showing a move to my GetLocation button

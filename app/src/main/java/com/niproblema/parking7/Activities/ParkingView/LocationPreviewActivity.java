@@ -1,11 +1,9 @@
-package com.niproblema.parking7.Activities;
+package com.niproblema.parking7.Activities.ParkingView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,15 +11,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
@@ -32,22 +24,14 @@ import com.niproblema.parking7.DataObjects.TimeSlot;
 import com.niproblema.parking7.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
+
 
 public class LocationPreviewActivity extends AppCompatActivity {
-	ImageView mImageView;
-	TextView mTitle;
-	EditText mDescription, mPrice;
-	Button mButton1, mButton2;
+	ImageView mParkPreviewImageView;
+	TextView mLocationTextView, mTimeSlotTextView, mDescriptionTextView, mPriceTextView, mInsuranceTextView, mOwnerTextView;
+	Button mOccupyBtn, mMessageBtn, mDirectionsBtn, mReportBtn, mFavouriteBtn;
 	FirebaseFunctions mFunctions;
-
-	// Modes
-	private boolean mIsAddingLocation = false;
-
-	// New location
-	private LatLng mLatLngLoc;
 
 	// Existing location
 	private Parking mParking;
@@ -56,31 +40,49 @@ public class LocationPreviewActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.park_preview_screen);
-//		mImageView = findViewById(R.id.ivParkPlacPreview);
-//		mTitle = findViewById(R.id.etTitle);
-//		mDescription = findViewById(R.id.etDescription);
-//		mPrice = findViewById(R.id.etPrice);
-//		mButton1 = findViewById(R.id.bP1);
-//		mButton2 = findViewById(R.id.bP2);
-//		mFunctions = FirebaseFunctions.getInstance();
-	}
+		mFunctions = FirebaseFunctions.getInstance();
 
-	@Override
-	protected void onStart() {
-		super.onStart();
 		Intent i = getIntent();
-		if (i.hasExtra("location")) {                // Adding a new place!
-			mLatLngLoc = i.getParcelableExtra("location");
-			setupUI(true);
-
-		} else if (i.hasExtra("parkingPlace")) {    // Viewing existing place
+		if (i.hasExtra("parkingPlace")) {    // Viewing existing place
 			mParking = (Parking) i.getSerializableExtra("parkingPlace");
-			setupUI(false);
 
 		} else {
 			Log.e("PREVIEW", "Error launching activity, no intent set");
 			finish();
 		}
+
+		mParkPreviewImageView = findViewById(R.id.ivParkPreview);
+		mLocationTextView = findViewById(R.id.tvLocationDescription);
+		mTimeSlotTextView = findViewById(R.id.tvTimeSlot);
+		mPriceTextView = findViewById(R.id.tvPrice);
+		mInsuranceTextView = findViewById(R.id.tvInsurance);
+		mOwnerTextView = findViewById(R.id.tvOwner);
+		mDescriptionTextView = findViewById(R.id.etDescription);
+		mOccupyBtn = findViewById(R.id.fabOccupy);
+		mMessageBtn = findViewById(R.id.fabMessage);
+		mDirectionsBtn = findViewById(R.id.fabDirections);
+		mReportBtn = findViewById(R.id.fabReport);
+		mFavouriteBtn = findViewById(R.id.fabFavourite);
+
+		mLocationTextView.setText(mParking.mLocation.toString());
+		mTimeSlotTextView.setText(mParking.mTimeSlots.get(0).toString());
+		mPriceTextView.setText(mParking.mTimeSlots.get(0).mPrice + "€/" + getString(R.string.general_hour));
+		mInsuranceTextView.setText(mParking.mTimeSlots.get(0).mInsuranceBail + "€");
+		mDescriptionTextView.setText(mParking.mDescription);
+		getAsyncData();
+	}
+
+	public void getAsyncData(){
+		//TODO get owner's username
+		//TODO get parking's photo.
+		//FirebaseDatabase.getInstance().getReference("/users")
+	}
+
+
+	@Override
+	protected void onStart() {
+		super.onStart();
+
 
 //		mButton2.setOnClickListener(new View.OnClickListener() {
 //			@Override
@@ -170,18 +172,6 @@ public class LocationPreviewActivity extends AppCompatActivity {
 //                    });
 //                }
 //            });
-	}
-
-
-	private void setupUI(boolean isAddingLocation) {
-		mIsAddingLocation = isAddingLocation;
-
-		if(isAddingLocation){
-
-		}else{
-
-		}
-
 	}
 
 

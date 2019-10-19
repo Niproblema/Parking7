@@ -2,6 +2,7 @@ package com.niproblema.parking7.DataObjects;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.firebase.database.DataSnapshot;
@@ -59,5 +60,17 @@ public class TimeSlot implements Serializable, DataObject {
 			put("timeStart", mTimeStart);
 			put("timeEnd", mTimeEnd);
 		}};
+	}
+
+	@NonNull
+	@Override
+	public String toString() {
+		int hourStart = (int) Math.floor(mTimeStart);
+		int minuteStart = (int) Math.round((mTimeStart - hourStart) * 60);
+
+		int hourEnd = (int) Math.floor(mTimeEnd);
+		int minuteEnd = (int) Math.round((mTimeEnd - hourEnd) * 60);
+
+		return String.format(hourStart + ":" + minuteStart + " - " + hourEnd + ":" + minuteEnd);
 	}
 }

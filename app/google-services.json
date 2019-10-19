@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "302409921006-qd41jkk379umdoml2sp9pan7ci52lj4i.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.niproblema.parking7",
+            "certificate_hash": "d1fecdf4c56e4818b0e5ead1bc576299a8796031"
+          }
+        },
+        {
           "client_id": "302409921006-cununb43ogtv14aeh2p2p2utnjjjfhqo.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

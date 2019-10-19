@@ -26,8 +26,58 @@
         android:layout_marginEnd="10dp"
         android:ems="10"
         android:gravity="center"
-        android:hint="@string/login_button_loginPassword"
+        android:hint="@string/login_loginPassword"
         android:inputType="textPassword" />
+
+    <EditText
+        android:id="@+id/etLoginPasswordRepeat"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:gravity="center"
+        android:hint="@string/login_registerPassword_repeat"
+        android:inputType="textPassword"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/etLoginFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:hint="@string/login_registerFirstName"
+        android:inputType="textPersonName"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/etLoginLastName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:hint="@string/login_registerLastName"
+        android:inputType="textPersonName"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/etLoginTaxNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:gravity="center"
+        android:hint="@string/login_registerTaxNumber"
+        android:inputType="number"
+        android:maxLength="8"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/bMain"

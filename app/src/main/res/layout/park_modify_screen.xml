@@ -1,6 +1,380 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/llContent"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivSelectableImage"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:contentDescription="@string/location_image_contentDescription"
+            app:srcCompat="@drawable/placeholder" />
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="5dp"
+                app:cardUseCompatPadding="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <!-- Location -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="26dp"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/location_location_description"
+                            android:src="@drawable/ic_location_50dp" />
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="9"
+                            android:orientation="vertical">
+
+                            <EditText
+                                android:id="@+id/etStreetName"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:gravity="center|start"
+                                android:hint="@string/location_street"
+                                android:inputType="textShortMessage"
+                                android:textSize="14sp" />
+
+                            <EditText
+                                android:id="@+id/etCityName"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:gravity="center|start"
+                                android:hint="@string/location_city"
+                                android:inputType="textShortMessage"
+                                android:textSize="14sp" />
+
+                            <EditText
+                                android:id="@+id/etCountryName"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_weight="1"
+                                android:gravity="center|start"
+                                android:hint="@string/location_country"
+                                android:inputType="textShortMessage"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="#90909090" />
+
+                    <!-- Time Limits -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/location_time_dedline_description"
+                            android:src="@drawable/ic_time_50dp" />
+
+                        <TextView
+                            android:id="@+id/tvTimeSlotStart"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:text="@string/location_timeStart_default"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvTimeSlotEnd"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="4"
+                            android:gravity="center"
+                            android:text="@string/location_timeEnd_default"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="#90909090" />
+
+                    <!-- Cost -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/location_cost"
+                            android:src="@drawable/ic_cost_50dp" />
+
+                        <EditText
+                            android:id="@+id/etPrice"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:hint="@string/location_justCost"
+                            android:inputType="numberDecimal"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvPrice"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/location_justCost_perHour"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+
+
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginBottom="5dp"
+                            android:background="#90909090" />
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/location_cost_risk"
+                            android:src="@drawable/ic_money_loss_50dp" />
+
+                        <EditText
+                            android:id="@+id/etInsurance"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="5dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:hint="@string/location_cost_risk"
+                            android:textSize="14sp" />
+
+                        <TextView
+                            android:id="@+id/tvInsurance"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="2"
+                            android:gravity="center"
+                            android:text="@string/location_justInusrance_cost"
+                            android:textSize="14sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!--<View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="#90909090" />-->
+
+                    <!-- Owner -->
+                    <!--LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:orientation="horizontal"
+                        android:padding="12dp">
+
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:contentDescription="@string/location_owner"
+                            android:src="@drawable/ic_person_50dp" />
+
+                        <TextView
+                            android:id="@+id/tvOwner"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="9"
+                            android:gravity="center|start"
+                            android:text="@string/location_owner"
+                            android:textStyle="bold" />
+                    </LinearLayout-->
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginEnd="5dp"
+                        android:background="#90909090" />
+
+                    <EditText
+                        android:id="@+id/etDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/rectangle"
+                        android:contentDescription="@string/location_description"
+                        android:drawablePadding="1dp"
+                        android:gravity="start|top"
+                        android:hint="@string/location_description"
+                        android:inputType="textLongMessage|textMultiLine|textNoSuggestions"
+                        android:lineSpacingMultiplier="1.5"
+                        android:minLines="5"
+                        android:padding="12dp"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llBottomBar"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAccept"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:elevation="5dp"
+            android:src="@drawable/ic_check_50dp"
+            app:backgroundTint="@color/floating_button_background"
+            app:elevation="5dp"
+            app:fabCustomSize="50dp"
+            app:layout_anchor="@id/llBottomBar"
+            app:layout_anchorGravity="bottom|end|right"
+            app:pressedTranslationZ="10dp"
+            app:useCompatPadding="true" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabRemove"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:elevation="5dp"
+            android:src="@drawable/ic_remove_50dp"
+            app:backgroundTint="@color/floating_button_background"
+            app:elevation="5dp"
+            app:fabCustomSize="50dp"
+            app:layout_anchor="@id/llBottomBar"
+            app:layout_anchorGravity="bottom|end|right"
+            app:pressedTranslationZ="10dp"
+            app:useCompatPadding="true" />
+
+        <!--<com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabDirections"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:elevation="5dp"
+            android:src="@drawable/ic_directions_50dp"
+            app:backgroundTint="@color/floating_button_background"
+            app:elevation="5dp"
+            app:fabCustomSize="50dp"
+            app:layout_anchor="@id/location_bar_layout"
+            app:layout_anchorGravity="bottom|end|right"
+            app:pressedTranslationZ="10dp"
+            app:useCompatPadding="true" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabReport"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:elevation="5dp"
+            android:src="@drawable/ic_report_50dp"
+            app:backgroundTint="@color/floating_button_background"
+            app:elevation="5dp"
+            app:fabCustomSize="50dp"
+            app:layout_anchor="@id/location_bar_layout"
+            app:layout_anchorGravity="bottom|end|right"
+            app:pressedTranslationZ="10dp"
+            app:useCompatPadding="true" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabFavourite"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:elevation="5dp"
+            android:src="@drawable/ic_favorite_empty_50dp"
+            app:backgroundTint="@color/floating_button_background"
+            app:elevation="5dp"
+            app:fabCustomSize="50dp"
+            app:layout_anchor="@id/location_bar_layout"
+            app:layout_anchorGravity="bottom|end|right"
+            app:pressedTranslationZ="10dp"
+            app:useCompatPadding="true" />-->
+    </LinearLayout>
+</RelativeLayout>

@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
+    <color name="floating_button_background">#A6000000</color>
     <color name="black_overlay">#66000000</color>
     <color name="loc_green">#1FC500</color>
     <color name="loc_red">#DA0000</color>

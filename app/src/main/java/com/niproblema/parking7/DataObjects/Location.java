@@ -5,6 +5,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -53,7 +54,7 @@ public class Location implements Serializable, DataObject {
 		return null;
 	}
 
-	public static Location fromLatLng(Context context, LatLng latLng){
+	public static Location fromLatLng(Context context, LatLng latLng) {
 /*		Location location = new Location()
 
 		try {
@@ -61,7 +62,7 @@ public class Location implements Serializable, DataObject {
 			 = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
 		}catch (Exception e){
 			Log.e("LOCATION", "Error retrieving possible addresses: " + e.toString());
-		}*/	// TODO
+		}*/    // TODO
 		return null;
 	}
 
@@ -74,5 +75,14 @@ public class Location implements Serializable, DataObject {
 			put("lon", mLon);
 			put("lat", mLat);
 		}};
+	}
+
+	@NonNull
+	@Override
+	public String toString() {
+		return mStreet + "\n"
+				+ mCity + "\n"
+				+ mCountry + "\n"
+				+ mLat + " " + mLon;
 	}
 }
