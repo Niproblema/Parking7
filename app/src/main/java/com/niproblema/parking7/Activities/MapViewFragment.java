@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -24,6 +25,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,6 +46,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 	private FirebaseDatabase mDatabase;
 	private FirebaseAuth mAuth;
 	private DatabaseReference mParkingsRef;
+	private ChildEventListener mParkingsEventListener;
 
 	private HashMap<String, Pair<Parking, Marker>> mLocationsMap = new HashMap<String, Pair<Parking, Marker>>();
 
@@ -84,7 +87,7 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 					public void onInfoWindowClick(Marker marker) {
 						Parking parking = mLocationsMap.get((String) marker.getTag()).first;
 						Intent launchIntent = null;
-						if (parking.mOwnerUID.equals(mAuth.getCurrentUser().getEmail())) {    // Editing own parking
+						if (parking.mOwnerUID.equals(mAuth.getCurrentUser().getUid())) {    // Editing own parking
 							launchIntent = new Intent(getActivity(), LocationAddModifyActivity.class);
 							launchIntent.putExtra("parkingPlace", parking);
 						} else {                                                                // Viewing someone else's parking
@@ -101,10 +104,92 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 				if (location != null) {   // TODO
 					googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 16));
 				}
-
-				addDBListener();
 			}
 		});
+
+		mParkingsEventListener = new ChildEventListener() {
+			@Override
+			public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+				String id = (String) dataSnapshot.getKey();
+
+				if (mLocationsMap != null && mLocationsMap.containsKey(id)) {
+					onChildChanged(dataSnapshot, s);
+					return;
+				}
+
+				if (dataSnapshot.exists() && mLocationsMap != null) {
+					Parking parking = Parking.parse(dataSnapshot);
+					if (parking != null) {
+						if (parking.mActive) {
+							Marker m = googleMap.addMarker(new MarkerOptions().position(new LatLng(parking.mLocation.mLat, parking.mLocation.mLon))
+									.title("TODO")    //TODO
+									.icon(BitmapDescriptorFactory.defaultMarker(parking.mOwnerUID.equals(mAuth.getUid()) ? BitmapDescriptorFactory.HUE_MAGENTA : (parking.mAvailable ? BitmapDescriptorFactory.HUE_GREEN : BitmapDescriptorFactory.HUE_RED))));
+							m.setTag(id);
+							mLocationsMap.put(id, new Pair<Parking, Marker>(parking, m));
+						} else {
+							mLocationsMap.put(id, new Pair<Parking, Marker>(parking, null));
+						}
+					}
+				}
+			}
+
+			@Override
+			public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+				String id = (String) dataSnapshot.getKey();
+
+				if (dataSnapshot.exists() && mLocationsMap != null) {
+					Pair<Parking, Marker> previous = mLocationsMap.get(id);
+					Parking parking = Parking.parse(dataSnapshot);
+
+					if (parking != null) {
+
+						if (parking.mActive) {
+							Marker m = previous.second;
+							if (m != null) {
+								m.setPosition(new LatLng(parking.mLocation.mLat, parking.mLocation.mLon));
+								m.setTitle("TODO");
+								m.setIcon(BitmapDescriptorFactory.defaultMarker(parking.mOwnerUID.equals(mAuth.getUid()) ? BitmapDescriptorFactory.HUE_MAGENTA : (parking.mAvailable ? BitmapDescriptorFactory.HUE_GREEN : BitmapDescriptorFactory.HUE_RED)));
+								m.setTag(id);
+								Pair<Parking, Marker> newPair = new Pair<Parking, Marker>(parking, m);
+								mLocationsMap.replace(id, newPair);
+							} else {
+								Marker mm = googleMap.addMarker(new MarkerOptions().position(new LatLng(parking.mLocation.mLat, parking.mLocation.mLon))
+										.title("TODO")    //TODO
+										.icon(BitmapDescriptorFactory.defaultMarker(parking.mOwnerUID.equals(mAuth.getUid()) ? BitmapDescriptorFactory.HUE_MAGENTA : (parking.mAvailable ? BitmapDescriptorFactory.HUE_GREEN : BitmapDescriptorFactory.HUE_RED))));
+								mm.setTag(id);
+								mLocationsMap.put(id, new Pair<Parking, Marker>(parking, mm));
+							}
+						} else {
+							if (previous.second != null) {
+								previous.second.remove();
+							}
+							Pair<Parking, Marker> newPair = new Pair<Parking, Marker>(parking, null);
+							mLocationsMap.replace(id, newPair);
+						}
+					}
+				}
+			}
+
+			@Override
+			public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+				String id = (String) dataSnapshot.getKey();
+				if (mLocationsMap != null && mLocationsMap.containsKey(id)) {
+					Marker marker = mLocationsMap.remove(id).second;
+					if (marker != null)
+						marker.remove();
+				}
+			}
+
+			@Override
+			public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+				// wtf is this
+			}
+
+			@Override
+			public void onCancelled(@NonNull DatabaseError databaseError) {
+				Log.w("DB", "Failed to read value.", databaseError.toException());
+			}
+		};
 
 		return rootView;
 	}
@@ -119,6 +204,18 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 	public void onPause() {
 		super.onPause();
 		mMapView.onPause();
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		mParkingsRef.addChildEventListener(mParkingsEventListener);
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		mParkingsRef.removeEventListener(mParkingsEventListener);
 	}
 
 	@Override
@@ -138,44 +235,5 @@ public class MapViewFragment extends Fragment implements GoogleMap.OnMarkerClick
 	public boolean onMarkerClick(Marker marker) {
 
 		return true;
-	}
-
-
-	private void addDBListener() {
-		// Add DB listener.
-		mParkingsRef.addValueEventListener(new ValueEventListener() {
-			@Override
-			public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-				Iterator<DataSnapshot> dbLocationsList = dataSnapshot.getChildren().iterator();
-				while (dbLocationsList.hasNext()) {
-					DataSnapshot dbLocation = dbLocationsList.next();
-					String id = (String) dbLocation.getKey();
-
-					// Remove old information
-					if (mLocationsMap.containsKey(id)) {
-						Marker marker = mLocationsMap.remove(id).second;
-						marker.remove();
-					}
-
-					// Add new, if it's an update or new data.
-					if (dbLocation.exists()) {
-						Parking parking = Parking.parse(dbLocation);
-						if (parking != null) {
-							Marker m = googleMap.addMarker(new MarkerOptions().position(new LatLng(parking.mLocation.mLat, parking.mLocation.mLon))
-									.title("TODO")    //TODO
-									.icon(BitmapDescriptorFactory.defaultMarker(parking.mAvailable ? BitmapDescriptorFactory.HUE_GREEN : BitmapDescriptorFactory.HUE_RED)));
-							m.setTag(id);
-							mLocationsMap.put(id, new Pair<Parking, Marker>(parking, m));
-						}
-					}
-				}
-			}
-
-			@Override
-			public void onCancelled(@NonNull DatabaseError databaseError) {
-				// Failed to read value
-				Log.w("DB", "Failed to read value.", databaseError.toException());
-			}
-		});
 	}
 }

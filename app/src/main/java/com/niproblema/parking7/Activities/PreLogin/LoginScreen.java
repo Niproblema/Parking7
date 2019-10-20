@@ -213,7 +213,7 @@ public class LoginScreen extends AppCompatActivity {
 	}
 
 	private Task<String> finalizeRegistrationResponse(final User user) {
-		return FirebaseFunctions.getInstance()
+		return FirebaseFunctions.getInstance("europe-west1")
 				.getHttpsCallable("finalizeRegistration")
 				.call(user.getSubmittableObject())
 				.continueWith(new Continuation<HttpsCallableResult, String>() {

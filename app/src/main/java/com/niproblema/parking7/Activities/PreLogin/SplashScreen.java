@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
+import com.niproblema.parking7.Utils.ContextManager;
 import com.niproblema.parking7.Utils.Permissions.Permissions;
 import com.niproblema.parking7.R;
 
@@ -20,7 +21,7 @@ public class SplashScreen extends AppCompatActivity {
 	 **/
 	private static final int SPLASH_DISPLAY_LENGTH = 1000;
 
-	private Permissions mLocation;
+	private Permissions mLocation, mStorageRead, mCurrPermission;
 	private TextView mPermissionNotificationTextView;
 
 	@Override
@@ -28,6 +29,7 @@ public class SplashScreen extends AppCompatActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.splash_screen);
+		ContextManager.applicationContext = getApplicationContext();
 
 		new Handler().postDelayed(new Runnable() {
 			@Override
@@ -36,14 +38,22 @@ public class SplashScreen extends AppCompatActivity {
 			}
 		}, SPLASH_DISPLAY_LENGTH);
 		mLocation = new Permissions(this, Manifest.permission.ACCESS_FINE_LOCATION);
+		mStorageRead = new Permissions(this, Manifest.permission.READ_EXTERNAL_STORAGE);
 		mPermissionNotificationTextView = (TextView) findViewById(R.id.tvPermissionsInfo);
 	}
 
 	protected void checkPermissions() {
+		mCurrPermission = mLocation;
 		mLocation.forcePermissions(new Permissions.IPCallBack() {
 			@Override
 			public void func() {
-				toLogin();
+				mCurrPermission = mStorageRead;
+				mStorageRead.forcePermissions(new Permissions.IPCallBack() {
+					@Override
+					public void func() {
+						toLogin();
+					}
+				});
 			}
 		});
 	}
@@ -57,7 +67,7 @@ public class SplashScreen extends AppCompatActivity {
 	@Override
 	public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-		mLocation.requestPermissionsResult(requestCode, permissions, grantResults);
+		mCurrPermission.requestPermissionsResult(requestCode, permissions, grantResults);
 		mPermissionNotificationTextView.setVisibility(View.VISIBLE);
 	}
 }

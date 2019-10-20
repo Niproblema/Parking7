@@ -71,6 +71,6 @@ public class TimeSlot implements Serializable, DataObject {
 		int hourEnd = (int) Math.floor(mTimeEnd);
 		int minuteEnd = (int) Math.round((mTimeEnd - hourEnd) * 60);
 
-		return String.format(hourStart + ":" + minuteStart + " - " + hourEnd + ":" + minuteEnd);
+		return String.format("%02d:%02d - %02d:%02d", hourStart, minuteStart, hourEnd, minuteEnd);
 	}
 }

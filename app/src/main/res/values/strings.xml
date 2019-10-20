@@ -50,5 +50,13 @@
     <string name="location_image_contentDescription">Klikni za izbiro slike</string>
     <string name="location_timeStart_default">00:00</string>
     <string name="location_timeEnd_default">24:00</string>
+    <string name="location_invalid_price">Neveljavna cena!</string>
+    <string name="location_invalid_insurance">Neveljavna kavcija!</string>
+
     <string name="general_hour">ura</string>
+    <string name="general_loading">Nalagam...</string>
+    <string name="general_error">Napaka!</string>
+    <string name="general_success">Uspešno!</string>
+    <string name="general_deleted">Izbrisano!</string>
+    <string name="general_wait">Počakaj malo!</string>
 </resources>

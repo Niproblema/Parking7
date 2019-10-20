@@ -15,15 +15,21 @@ import java.util.stream.Collectors;
 public class Parking implements Serializable, DataObject {
 	// ClientSide
 	/// Information
-	public String mOwnerUID;
 	final public String mAccessInstructions;
 	final public String mDescription;
 	/// Location
 	final public Location mLocation;
 	/// TimeSlots
 	final public List<TimeSlot> mTimeSlots;
+	/// Images
+	final public List<String> mImageURIs;    // URIs to images!
 
 	// ServerSide
+	/// Parking UID
+	public String mUID;
+
+	public boolean mActive;
+	public String mOwnerUID;
 	/// Score
 	public double mScore;
 	/// Availability
@@ -32,11 +38,12 @@ public class Parking implements Serializable, DataObject {
 	/// Transactions
 	public List<String> mTransactionUIDs;    // List of all previous transactions. Added by server when transaction ends.
 
-	public Parking(List<TimeSlot> timeSlots, Location location, String description, String access) {
+	public Parking(List<TimeSlot> timeSlots, Location location, String description, String access, List<String> images) {
 		this.mTimeSlots = timeSlots;
 		this.mLocation = location;
 		this.mDescription = description;
 		this.mAccessInstructions = access;
+		mImageURIs = images;
 	}
 
 	@Nullable
@@ -64,14 +71,22 @@ public class Parking implements Serializable, DataObject {
 				String parsedTransactionUID = transactionData.getValue(String.class);
 				transactions.add(parsedTransactionUID);
 			}
+			boolean active = data.child("active").getValue(Boolean.class);
+			List<String> imageURIs = new ArrayList<String>();
+			for (DataSnapshot imageURIdata : data.child("imageURIs").getChildren()) {
+				String parsedImageUID = imageURIdata.getValue(String.class);
+				imageURIs.add(parsedImageUID);
+			}
 
 			// Init
-			Parking parsedPark = new Parking(slots, location, description, accessInstruction);
+			Parking parsedPark = new Parking(slots, location, description, accessInstruction, imageURIs);
+			parsedPark.mUID = data.getKey();
 			parsedPark.mAvailable = available;
 			parsedPark.mTransactionUID = transactionUID;
 			parsedPark.mOwnerUID = ownerUID;
 			parsedPark.mScore = score;
 			parsedPark.mTransactionUIDs = transactions;
+			parsedPark.mActive = active;
 			return parsedPark;
 		} catch (Exception e) {
 			Log.e("PARKING", "Error parsing parking data: " + e.toString());
@@ -87,6 +102,7 @@ public class Parking implements Serializable, DataObject {
 			put("location", mLocation.getSubmittableObject());
 			put("accessInstructions", mAccessInstructions != null ? mAccessInstructions : "");
 			put("description", mDescription != null ? mDescription : "");
+			put("imageURIs", mImageURIs);
 		}};
 	}
 }
