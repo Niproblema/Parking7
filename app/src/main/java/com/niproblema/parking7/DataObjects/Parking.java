@@ -35,6 +35,7 @@ public class Parking implements Serializable, DataObject {
 	/// Availability
 	public boolean mAvailable;
 	public String mTransactionUID;            // Current transaction active on parking.
+	public String mRenterUID;
 	/// Transactions
 	public List<String> mTransactionUIDs;    // List of all previous transactions. Added by server when transaction ends.
 
@@ -53,6 +54,7 @@ public class Parking implements Serializable, DataObject {
 			String accessInstruction = data.child("accessInstructions").getValue(String.class);
 			boolean available = data.child("availability").child("available").getValue(Boolean.class);
 			String transactionUID = data.child("availability").child("transactionUID").getValue(String.class);
+			String renterUID = data.child("availability").child("renterUID").getValue(String.class);
 			String description = data.child("description").getValue(String.class);
 			Location location = Location.parse(data.child("location"));
 			if (location == null) return null;
@@ -82,6 +84,7 @@ public class Parking implements Serializable, DataObject {
 			Parking parsedPark = new Parking(slots, location, description, accessInstruction, imageURIs);
 			parsedPark.mUID = data.getKey();
 			parsedPark.mAvailable = available;
+			parsedPark.mRenterUID = renterUID;
 			parsedPark.mTransactionUID = transactionUID;
 			parsedPark.mOwnerUID = ownerUID;
 			parsedPark.mScore = score;

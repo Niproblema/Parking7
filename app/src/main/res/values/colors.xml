@@ -8,4 +8,7 @@
     <color name="black_overlay">#66000000</color>
     <color name="loc_green">#1FC500</color>
     <color name="loc_red">#DA0000</color>
+
+    <color name="rentingYelow">#F7E400</color>
+    <color name="notRentingGray">#5C5C5C</color>
 </resources>

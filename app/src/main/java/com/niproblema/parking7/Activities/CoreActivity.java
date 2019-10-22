@@ -4,8 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
+import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,16 +21,17 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.niproblema.parking7.R;
 
-import java.text.DecimalFormat;
-import java.util.Random;
-
 public class CoreActivity extends AppCompatActivity {
 	public static final long BACK_DOUBLEPRESS_INTERVAL = 500;
+	public static boolean mIsRenting = false;
+
 	private long mBackPressTimeLast = 0l;
 
 	private FirebaseAuth mAuth;
 	private FirebaseDatabase mDatabase;
-	private TextView mUsername, mBalance;
+
+	private LinearLayout llTopBar;
+	private TextView mUsername, mBalance, mRentingStatus;
 
 	private ChildEventListener mListenForBalanceChanges;
 	private DatabaseReference mDatabaseReference;
@@ -36,10 +41,13 @@ public class CoreActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.core_screen);
+		mIsRenting = false;
 		mAuth = FirebaseAuth.getInstance();
 		mDatabase = FirebaseDatabase.getInstance();
 		mUsername = findViewById(R.id.tvUsername);
+		mRentingStatus = findViewById(R.id.tvRentingStatus);
 		mBalance = findViewById(R.id.tvBalance);
+		llTopBar = findViewById(R.id.llTopBar);
 		mUsername.setText(mAuth.getCurrentUser().getEmail());
 
 		mDatabaseReference = mDatabase.getReference("/users/" + mAuth.getUid());// + "/balance");
@@ -48,6 +56,12 @@ public class CoreActivity extends AppCompatActivity {
 			public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 				if (dataSnapshot.getKey().equals("balance")) {
 					mBalance.setText(String.format("%.2f€", dataSnapshot.getValue(Double.class)));
+				} else if (dataSnapshot.getKey().equals("isRenting")) {
+					try {
+						onRentingChanged(dataSnapshot.getValue(Boolean.class));
+					} catch (Exception e) {
+						Log.e("CORE", e.toString());
+					}
 				}
 			}
 
@@ -55,6 +69,12 @@ public class CoreActivity extends AppCompatActivity {
 			public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 				if (dataSnapshot.getKey().equals("balance")) {
 					mBalance.setText(String.format("%.2f€", dataSnapshot.getValue(Double.class)));
+				} else if (dataSnapshot.getKey().equals("isRenting")) {
+					try {
+						onRentingChanged(dataSnapshot.getValue(Boolean.class));
+					} catch (Exception e) {
+						Log.e("CORE", e.toString());
+					}
 				}
 			}
 
@@ -98,5 +118,24 @@ public class CoreActivity extends AppCompatActivity {
 			Toast.makeText(getApplicationContext(), "Dvojni nazaj gumb za odjavo", Toast.LENGTH_SHORT).show();
 		}
 		mBackPressTimeLast = time;
+	}
+
+	private void onRentingChanged(boolean amRenting) {
+		if (amRenting == mIsRenting)
+			return;
+
+		if (amRenting) {
+			llTopBar.setBackgroundColor(getColor(R.color.rentingYelow));
+			mBalance.setTextColor(getColor(R.color.notRentingGray));
+			mUsername.setTextColor(getColor(R.color.notRentingGray));
+			mRentingStatus.setTextColor(getColor(R.color.notRentingGray));
+			mRentingStatus.setVisibility(View.VISIBLE);
+		} else {
+			llTopBar.setBackgroundColor(getColor(R.color.notRentingGray));
+			mBalance.setTextColor(Color.WHITE);
+			mUsername.setTextColor(Color.WHITE);
+			mRentingStatus.setVisibility(View.INVISIBLE);
+		}
+		mIsRenting = amRenting;
 	}
 }

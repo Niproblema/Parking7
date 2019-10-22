@@ -222,8 +222,7 @@ public class LoginScreen extends AppCompatActivity {
 						if (((Map<String, Boolean>) task.getResult().getData()).get("status")) {
 							return "Success!";
 						}
-
-						return "Failiure";
+						throw new Exception();
 					}
 				});
 	}

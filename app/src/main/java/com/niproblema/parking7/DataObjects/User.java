@@ -20,6 +20,7 @@ public class User implements DataObject {
 	public List<String> mChatsUIDs;
 	public List<String> mParkingUIDs;
 	public List<String> mTransactionUIDs;
+	public boolean mIsRenting = false;
 
 	public User(String firstName, String lastName, String loginEmail) {
 		this.mFirstName = firstName;
@@ -35,6 +36,7 @@ public class User implements DataObject {
 			String firstName = data.child("firstName").getValue(String.class);
 			String lastName = data.child("lastName").getValue(String.class);
 			String loginEmail = data.child("loginEmail").getValue(String.class);
+			boolean isRenting = data.child("isRenting").getValue(Boolean.class);
 			List<String> chatUIDs = new ArrayList<String>();
 			for (DataSnapshot chatUID : data.child("chats").getChildren()) {
 				String parsedChatUID = chatUID.getValue(String.class);
@@ -59,6 +61,7 @@ public class User implements DataObject {
 			u.mChatsUIDs = chatUIDs;
 			u.mParkingUIDs = parkingUIDs;
 			u.mTransactionUIDs = transactionUIDs;
+			u.mIsRenting = isRenting;
 			return u;
 		} catch (Exception e) {
 			Log.e("USER", "Error parsing user data: " + e.toString());

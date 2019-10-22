@@ -184,6 +184,11 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 	double parsedInsurance;
 
 	private void onAcceptButtonClick_P1() {
+		if(mIsBlocked){
+			ToastManager.showToast(getString(R.string.general_wait));
+			return;
+		}
+
 		try {
 			parsedPrice = Double.parseDouble(mPriceET.getText().toString());
 			if (parsedPrice < 0) throw new Exception("Negative price");
@@ -203,7 +208,6 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 		}
 
 		mIsBlocked = true;
-		mAcceptModifyButton.setEnabled(false);
 		ToastManager.showToast(getString(R.string.general_loading));
 		if (mImagePath == null) {
 			onAcceptButtonClick_P2(null);
@@ -242,6 +246,7 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 		addParkResponse(parking).addOnCompleteListener(new OnCompleteListener<String>() {
 			@Override
 			public void onComplete(@NonNull Task<String> task) {
+				mIsBlocked = false;
 				if (!task.isSuccessful()) {
 					Exception e = task.getException();
 					if (e instanceof FirebaseFunctionsException) {
@@ -250,8 +255,6 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						Object details = ffe.getDetails();
 
 					}
-					mIsBlocked = false;
-					mAcceptModifyButton.setEnabled(true);
 					Log.e("ADD", "addMessage:onFailure", e);
 					ToastManager.showToast(getString(R.string.general_error));
 					return;
@@ -263,12 +266,15 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 				finish();
 			}
 		});
-
-
 		mIsBlocked = false;
 	}
 
 	private void onEditButtonClick_P1() {
+		if(mIsBlocked){
+			ToastManager.showToast(getString(R.string.general_wait));
+			return;
+		}
+
 		try {
 			parsedPrice = Double.parseDouble(mPriceET.getText().toString());
 			if (parsedPrice < 0) throw new Exception("Negative price");
@@ -330,6 +336,7 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 		editParkResponse(mParking.mUID, parking).addOnCompleteListener(new OnCompleteListener<String>() {
 			@Override
 			public void onComplete(@NonNull Task<String> task) {
+				mIsBlocked = false;
 				if (!task.isSuccessful()) {
 					Exception e = task.getException();
 					if (e instanceof FirebaseFunctionsException) {
@@ -338,8 +345,8 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						Object details = ffe.getDetails();
 
 					}
-					mIsBlocked = false;
-					mAcceptModifyButton.setEnabled(true);
+
+
 					Log.e("EDIT", "addMessage:onFailure", e);
 					ToastManager.showToast(getString(R.string.general_error));
 					return;
@@ -356,9 +363,17 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 	}
 
 	private void onDeleteButtonClick() {
+		if(mIsBlocked){
+			ToastManager.showToast(getString(R.string.general_wait));
+			return;
+		}
+
+		mIsBlocked = true;
+
 		removeParkResponse(mParking).addOnCompleteListener(new OnCompleteListener<String>() {
 			@Override
 			public void onComplete(@NonNull Task<String> task) {
+				mIsBlocked = false;
 				if (!task.isSuccessful()) {
 					Exception e = task.getException();
 					if (e instanceof FirebaseFunctionsException) {
@@ -367,8 +382,6 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						Object details = ffe.getDetails();
 
 					}
-					mIsBlocked = false;
-					mAcceptModifyButton.setEnabled(true);
 					Log.e("DELETE", "addMessage:onFailure", e);
 					ToastManager.showToast(getString(R.string.general_error));
 					return;
@@ -427,7 +440,6 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						} else {
 							Log.e("IMAGE", "Could not retrieve download link");
 							mIsBlocked = false;
-							mAcceptModifyButton.setEnabled(true);
 							ToastManager.showToast(getString(R.string.general_error));
 						}
 					}
@@ -436,7 +448,6 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 					@Override
 					public void onFailure(@NonNull Exception e) {
 						mIsBlocked = false;
-						mAcceptModifyButton.setEnabled(true);
 						ToastManager.showToast(getString(R.string.general_error));
 					}
 				});
@@ -464,7 +475,6 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						} else {
 							Log.e("IMAGE", "Could not retrieve download link");
 							mIsBlocked = false;
-							mAcceptModifyButton.setEnabled(true);
 							ToastManager.showToast(getString(R.string.general_error));
 						}
 					}
@@ -473,7 +483,6 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 					@Override
 					public void onFailure(@NonNull Exception e) {
 						mIsBlocked = false;
-						mAcceptModifyButton.setEnabled(true);
 						ToastManager.showToast(getString(R.string.general_error));
 					}
 				});
@@ -528,7 +537,7 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						if (((Map<String, Boolean>) task.getResult().getData()).get("status")) {
 							return "Success!";
 						}
-						return "Failiure";
+						throw new Exception();
 					}
 				});
 	}
@@ -546,7 +555,7 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						if (((Map<String, Boolean>) task.getResult().getData()).get("status")) {
 							return "Success!";
 						}
-						return "Failiure";
+						throw new Exception();
 					}
 				});
 	}
@@ -564,7 +573,7 @@ public class LocationAddModifyActivity extends AppCompatActivity {
 						if (((Map<String, Boolean>) task.getResult().getData()).get("status")) {
 							return "Success!";
 						}
-						return "Failiure";
+						throw new Exception();
 					}
 				});
 	}
