@@ -33,6 +33,7 @@ import com.niproblema.parking7.DataObjects.Parking;
 import com.niproblema.parking7.DataObjects.Recurrence;
 import com.niproblema.parking7.DataObjects.TimeSlot;
 import com.niproblema.parking7.R;
+import com.niproblema.parking7.Utils.ContextManager;
 import com.niproblema.parking7.Utils.PictureManager;
 import com.niproblema.parking7.Utils.ToastManager;
 
@@ -58,6 +59,7 @@ public class LocationPreviewActivity extends AppCompatActivity {
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.park_preview_screen);
+		ContextManager.applicationContext = getApplicationContext();
 		mFunctions = FirebaseFunctions.getInstance("europe-west1");
 
 		Intent i = getIntent();
